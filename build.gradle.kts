@@ -63,7 +63,7 @@ subprojects {
             plugins.hasPlugin("com.android.application")) {
             android.apply {
                 compileSdkVersion(30)
-                buildToolsVersion = "30.0.2"
+                buildToolsVersion = "30.0.3"
                 ndkPath = "${System.getenv("ANDROID_SDK_ROOT")}/ndk/magisk"
 
                 defaultConfig {
