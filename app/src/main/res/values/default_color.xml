@@ -4,8 +4,8 @@
     These values are from the default theme (Piplup light)
 -->
 <resources>
-    <color name="defColorPrimary">#4EAFF5</color>
-    <color name="defColorPrimaryVariant">#804EAFF5</color>
+    <color name="defColorPrimary">#ff2ad181</color>
+    <color name="defColorPrimaryVariant">#802ad181</color>
     <color name="defColorSecondary">#3E78AF</color>
     <color name="defColorSecondaryVariant">#803E78AF</color>
     <color name="defColorSurface">#F9F9F9</color>
@@ -15,7 +15,7 @@
     <color name="defColorOnPrimaryVariant">#D9E6E6E6</color>
     <color name="defColorOnSecondary">#F9F9F9</color>
     <color name="defColorOnBackground">@color/defColorOnSurface</color>
-    <color name="defColorError">#CC0047</color>
+    <color name="defColorError">#ffea3447</color>
     <color name="defColorOnError">#F9F9F9</color>
     <color name="defColorOnSurface">#444444</color>
     <color name="defColorOnSurfaceVariant">#80444444</color>

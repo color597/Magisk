@@ -35,8 +35,8 @@
             style="@style/WidgetFoundation.Appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="com.topjohnwu.magisk.utils.HideTopViewOnScrollBehavior"
-            app:fitsSystemWindowsInsets="top">
+            app:fitsSystemWindowsInsets="top"
+            app:layout_behavior="com.topjohnwu.magisk.utils.HideTopViewOnScrollBehavior">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/main_toolbar"
@@ -51,7 +51,7 @@
                 gone="@{android.os.Build.VERSION.SDK_INT >= 21}"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="?colorSurfaceVariant"/>
+                android:background="?colorSurfaceVariant" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -66,40 +66,41 @@
          Possibility is then to keep the middle fab and assign it some other functionality on all
          screens. Which -ha-ha- good luck finding something on superuser and homepage...
          -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/main_bottom_bar"
-            style="@style/WidgetFoundation.Card.Elevated"
-            android:layout_width="224dp"
+        <!--        <com.google.android.material.card.MaterialCardView-->
+        <!--            android:id="@+id/main_bottom_bar"-->
+        <!--            style="@style/WidgetFoundation.Card.Elevated"-->
+        <!--            android:layout_width="224dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="bottom|center_horizontal"-->
+        <!--            android:layout_marginStart="@dimen/l1"-->
+        <!--            android:layout_marginEnd="@dimen/l1"-->
+        <!--            android:layout_marginBottom="@dimen/l1"-->
+        <!--            android:fitsSystemWindows="false"-->
+        <!--            app:layout_fitsSystemWindowsInsets="bottom"-->
+        <!--            app:layout_behavior="com.topjohnwu.magisk.utils.HideBottomViewOnScrollBehavior"-->
+        <!--            tools:layout_marginBottom="64dp">-->
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/main_navigation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginStart="@dimen/l1"
-            android:layout_marginEnd="@dimen/l1"
-            android:layout_marginBottom="@dimen/l1"
             android:fitsSystemWindows="false"
-            app:layout_fitsSystemWindowsInsets="bottom"
+            android:paddingBottom="0dp"
+            android:textStyle="bold"
+            app:elevation="0dp"
+            app:fitsSystemWindowsInsets="start|end"
+            app:itemHorizontalTranslationEnabled="false"
+            app:itemIconTint="@color/color_menu_tint"
+            app:itemRippleColor="?colorPrimary"
+            app:itemTextAppearanceActive="@style/AppearanceFoundation.Tiny.Bold"
+            app:itemTextAppearanceInactive="@style/AppearanceFoundation.Tiny.Bold"
+            app:itemTextColor="@color/color_menu_tint"
             app:layout_behavior="com.topjohnwu.magisk.utils.HideBottomViewOnScrollBehavior"
-            tools:layout_marginBottom="64dp">
+            app:layout_fitsSystemWindowsInsets="bottom"
+            app:menu="@menu/menu_bottom_nav" />
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/main_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:textStyle="bold"
-                android:fitsSystemWindows="false"
-                android:paddingBottom="0dp"
-                app:fitsSystemWindowsInsets="start|end"
-                app:elevation="0dp"
-                app:itemHorizontalTranslationEnabled="false"
-                app:itemIconTint="@color/color_menu_tint"
-                app:itemRippleColor="?colorPrimary"
-                app:itemTextAppearanceActive="@style/AppearanceFoundation.Tiny.Bold"
-                app:itemTextAppearanceInactive="@style/AppearanceFoundation.Tiny.Bold"
-                app:itemTextColor="@color/color_menu_tint"
-                app:labelVisibilityMode="unlabeled"
-                app:menu="@menu/menu_bottom_nav" />
-
-        </com.google.android.material.card.MaterialCardView>
+        <!--        </com.google.android.material.card.MaterialCardView>-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

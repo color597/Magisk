@@ -92,9 +92,21 @@
                 viewModel="@{viewModel}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/l1"
-                android:layout_marginEnd="@dimen/l1"
                 app:layout_constraintTop_toBottomOf="@+id/home_device_wrapper" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_marginStart="@dimen/color_list_padding_left"
+                android:layout_marginEnd="@dimen/color_list_padding_right"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#1a000000" />
+
+            </LinearLayout>
 
             <include
                 android:id="@+id/home_manager_wrapper"
@@ -102,9 +114,6 @@
                 viewModel="@{viewModel}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/l1"
-                android:layout_marginTop="@dimen/l1"
-                android:layout_marginEnd="@dimen/l1"
                 app:layout_constraintTop_toBottomOf="@+id/home_magisk_wrapper" />
 
             <Space
@@ -112,84 +121,83 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/l1" />
 
-            <Button
-                style="@style/WidgetFoundation.Button.Outlined"
-                gone="@{!viewModel.showSafetyNet}"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    style="@style/WidgetFoundation.Button.Outlined"
+                    gone="@{!viewModel.showSafetyNet}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/color_list_padding_left"
+                    android:layout_marginEnd="@dimen/l1"
+                    android:layout_weight="1.0"
+                    android:minHeight="52dp"
+                    android:onClick="@{() -> viewModel.onSafetyNetPressed()}"
+                    android:text="@string/home_check_safetynet"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="@dimen/r1" />
+
+                <Button
+                    style="@style/WidgetFoundation.Button.Outlined.Error"
+                    goneUnless="@{Info.env.isActive}"
+                    android:layout_width="0dp"
+                    app:background="@color/color_error_transient"
+                    android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:layout_marginStart="@dimen/l1"
+                    android:layout_marginEnd="@dimen/color_list_padding_right"
+                    android:layout_weight="1.0"
+                    android:onClick="@{() -> viewModel.onDeletePressed()}"
+                    android:text="@string/uninstall_magisk_title"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    app:cornerRadius="@dimen/r1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/l1"
-                android:layout_marginEnd="@dimen/l1"
-                android:onClick="@{() -> viewModel.onSafetyNetPressed()}"
-                android:text="@string/home_check_safetynet"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                app:cornerRadius="@dimen/r1"
-                app:icon="@drawable/ic_safetynet_md2" />
+                android:orientation="vertical"
+                android:paddingTop="@dimen/l1">
 
-            <Button
-                style="@style/WidgetFoundation.Button.Outlined.Error"
-                goneUnless="@{Info.env.isActive}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/l1"
-                android:layout_marginEnd="@dimen/l1"
-                android:onClick="@{() -> viewModel.onDeletePressed()}"
-                android:text="@string/uninstall_magisk_title"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                app:cornerRadius="@dimen/r1"
-                app:icon="@drawable/ic_delete_md2" />
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/WidgetFoundation.Card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_margin="@dimen/l1"
-                android:focusable="false">
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/l1">
+                    android:layout_marginStart="@dimen/l1"
+                    android:layout_marginEnd="@dimen/l1"
+                    android:text="@string/home_support_title"
+                    android:textAppearance="@style/AppearanceFoundation.Title" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/l1"
-                        android:layout_marginEnd="@dimen/l1"
-                        android:text="@string/home_support_title"
-                        android:textAppearance="@style/AppearanceFoundation.Title" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/l1"
+                    android:layout_marginTop="@dimen/l_50"
+                    android:layout_marginEnd="@dimen/l1"
+                    android:text="@string/home_support_content"
+                    android:textAppearance="@style/AppearanceFoundation.Caption.Variant" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/l1"
-                        android:layout_marginTop="@dimen/l_50"
-                        android:layout_marginEnd="@dimen/l1"
-                        android:text="@string/home_support_content"
-                        android:textAppearance="@style/AppearanceFoundation.Caption.Variant" />
+                <include
+                    item="@{DeveloperItem.Main.INSTANCE}"
+                    layout="@layout/item_developer"
+                    viewModel="@{viewModel}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/l_50" />
 
-                    <include
-                        item="@{DeveloperItem.Main.INSTANCE}"
-                        layout="@layout/item_developer"
-                        viewModel="@{viewModel}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/l_50" />
+                <include
+                    item="@{DeveloperItem.App.INSTANCE}"
+                    layout="@layout/item_developer"
+                    viewModel="@{viewModel}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/l_50" />
 
-                    <include
-                        item="@{DeveloperItem.App.INSTANCE}"
-                        layout="@layout/item_developer"
-                        viewModel="@{viewModel}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/l_50" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
         </LinearLayout>
 

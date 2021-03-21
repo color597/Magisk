@@ -46,7 +46,6 @@
 
 
     <style name="WidgetFoundation.Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:textStyle">bold</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/l_50</item>
     </style>
@@ -62,8 +61,8 @@
         <item name="android:textStyle">bold</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/l_50</item>
-        <item name="strokeColor">?colorPrimary</item>
-        <item name="android:textColor">?colorPrimary</item>
+        <item name="background">?colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="WidgetFoundation.Button.Outlined.OnPrimary">
@@ -74,9 +73,9 @@
     </style>
 
     <style name="WidgetFoundation.Button.Outlined.Error">
-        <item name="strokeColor">@color/color_error_transient</item>
+        <item name="background">@color/color_error_transient</item>
         <item name="rippleColor">@color/color_error_transient</item>
-        <item name="android:textColor">@color/color_error_transient</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="iconTint">@color/color_error_transient</item>
     </style>
 
