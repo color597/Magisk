@@ -108,6 +108,8 @@ static bool validate(const char *s) {
             (c >= '0' && c <= '9') || c == '_' || c == ':') {
             continue;
         }
+        if (SDK_INT >= 29 && c == '$')
+            continue;
         if (c == '.') {
             dot = true;
             continue;
@@ -211,7 +213,6 @@ static bool str_ends_safe(string_view s, string_view ss) {
 
 #define SNET_PROC    "com.google.android.gms.unstable"
 #define GMS_PKG      "com.google.android.gms"
-#define MICROG_PKG   "org.microg.gms.droidguard"
 
 static bool init_list() {
     LOGD("hide: initialize\n");
@@ -231,7 +232,6 @@ static bool init_list() {
 
     // Add SafetyNet by default
     add_hide_set(GMS_PKG, SNET_PROC);
-    add_hide_set(MICROG_PKG, SNET_PROC);
 
     // We also need to hide the default GMS process if MAGISKTMP != /sbin
     // The snet process communicates with the main process and get additional info
@@ -333,7 +333,7 @@ void auto_start_magiskhide(bool late_props) {
     }
 }
 
-bool is_hide_target(int uid, string_view process) {
+bool is_hide_target(int uid, string_view process, int max_len) {
     mutex_guard lock(hide_state_lock);
 
     if (uid % 100000 >= 90000) {
@@ -343,6 +343,8 @@ bool is_hide_target(int uid, string_view process) {
             return false;
 
         for (auto &s : it->second) {
+            if (s.length() > max_len && process.length() > max_len && str_starts(s, process))
+                return true;
             if (str_starts(process, s))
                 return true;
         }
@@ -352,6 +354,8 @@ bool is_hide_target(int uid, string_view process) {
             return false;
 
         for (auto &s : it->second) {
+            if (s.length() > max_len && process.length() > max_len && str_starts(s, process))
+                return true;
             if (s == process)
                 return true;
         }
