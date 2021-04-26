@@ -1,7 +1,7 @@
 package com.topjohnwu.magisk.core.tasks
 
-import android.content.Context
 import android.net.Uri
+import android.system.Os
 import android.widget.Toast
 import androidx.annotation.WorkerThread
 import androidx.core.os.postDelayed
@@ -12,10 +12,8 @@ import com.topjohnwu.magisk.core.*
 import com.topjohnwu.magisk.core.utils.MediaStoreUtils
 import com.topjohnwu.magisk.core.utils.MediaStoreUtils.inputStream
 import com.topjohnwu.magisk.core.utils.MediaStoreUtils.outputStream
-import com.topjohnwu.magisk.data.repository.NetworkService
-import com.topjohnwu.magisk.di.Protected
+import com.topjohnwu.magisk.di.ServiceLocator
 import com.topjohnwu.magisk.ktx.reboot
-import com.topjohnwu.magisk.ktx.symlink
 import com.topjohnwu.magisk.ktx.withStreams
 import com.topjohnwu.magisk.ktx.writeTo
 import com.topjohnwu.magisk.utils.Utils
@@ -34,8 +32,6 @@ import org.kamranzafar.jtar.TarEntry
 import org.kamranzafar.jtar.TarHeader
 import org.kamranzafar.jtar.TarInputStream
 import org.kamranzafar.jtar.TarOutputStream
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import timber.log.Timber
 import java.io.*
 import java.nio.ByteBuffer
@@ -46,14 +42,14 @@ import java.util.zip.ZipFile
 abstract class MagiskInstallImpl protected constructor(
     protected val console: MutableList<String> = NOPList.getInstance(),
     private val logs: MutableList<String> = NOPList.getInstance()
-) : KoinComponent {
+) {
 
     protected var installDir = File("xxx")
     private lateinit var srcBoot: File
 
     private val shell = Shell.getShell()
-    private val service: NetworkService by inject()
-    protected val context: Context by inject(Protected)
+    private val service get() = ServiceLocator.networkService
+    protected val context get() = ServiceLocator.deContext
     private val useRootDir = shell.isRoot && Info.noDataExec
 
     private fun findImage(): Boolean {
@@ -111,7 +107,7 @@ abstract class MagiskInstallImpl protected constructor(
                 } ?: emptyArray()
                 for (lib in libs) {
                     val name = lib.name.substring(3, lib.name.length - 3)
-                    symlink(lib.path, "$installDir/$name")
+                    Os.symlink(lib.path, "$installDir/$name")
                 }
             }
 

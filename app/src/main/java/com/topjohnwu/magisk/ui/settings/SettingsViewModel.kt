@@ -1,6 +1,5 @@
 package com.topjohnwu.magisk.ui.settings
 
-import android.content.Context
 import android.os.Build
 import android.view.View
 import android.widget.Toast
@@ -18,6 +17,7 @@ import com.topjohnwu.magisk.core.Info
 import com.topjohnwu.magisk.core.isRunningAsStub
 import com.topjohnwu.magisk.core.tasks.HideAPK
 import com.topjohnwu.magisk.data.database.RepoDao
+import com.topjohnwu.magisk.di.AppContext
 import com.topjohnwu.magisk.events.AddHomeIconEvent
 import com.topjohnwu.magisk.events.RecreateEvent
 import com.topjohnwu.magisk.events.dialog.BiometricEvent
@@ -25,7 +25,6 @@ import com.topjohnwu.magisk.ktx.activity
 import com.topjohnwu.magisk.utils.Utils
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.launch
-import org.koin.core.get
 
 class SettingsViewModel(
     private val repositoryDao: RepoDao
@@ -42,7 +41,7 @@ class SettingsViewModel(
     }
 
     private fun createItems(): List<BaseSettingsItem> {
-        val context = get<Context>()
+        val context = AppContext
         val hidden = context.packageName != BuildConfig.APPLICATION_ID
 
         // Customization
@@ -60,7 +59,7 @@ class SettingsViewModel(
         ))
         if (Info.env.isActive) {
             list.add(ClearRepoCache)
-            if (Build.VERSION.SDK_INT >= 21 && Const.USER_ID == 0) {
+            if (Const.USER_ID == 0) {
                 if (hidden)
                     list.add(Restore)
                 else if (Info.isConnected.get())
@@ -74,10 +73,6 @@ class SettingsViewModel(
                 Magisk,
                 MagiskHide, SystemlessHosts
             ))
-            if (Build.VERSION.SDK_INT < 19) {
-                // MagiskHide is only available on 4.4+
-                list.remove(MagiskHide)
-            }
         }
 
         // Superuser

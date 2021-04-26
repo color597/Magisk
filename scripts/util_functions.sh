@@ -33,6 +33,16 @@ grep_prop() {
   cat $FILES 2>/dev/null | dos2unix | sed -n "$REGEX" | head -n 1
 }
 
+grep_get_prop() {
+  local result=$(grep_prop $@)
+  if [ -z "$result" ]; then
+    # Fallback to getprop
+    getprop "$1"
+  else
+    echo $result
+  fi
+}
+
 getvar() {
   local VARNAME=$1
   local VALUE
@@ -438,7 +448,7 @@ flash_image() {
 install_magisk() {
   cd $MAGISKBIN
 
-  if [ $API -ge 21 -a ! -c $BOOTIMAGE ]; then
+  if [ ! -c $BOOTIMAGE ]; then
     eval $BOOTSIGNER -verify < $BOOTIMAGE && BOOTSIGNED=true
     $BOOTSIGNED && ui_print "- Boot image is signed with AVB 1.0"
   fi
@@ -508,10 +518,10 @@ remove_system_su() {
 }
 
 api_level_arch_detect() {
-  API=`grep_prop ro.build.version.sdk`
-  ABI=`grep_prop ro.product.cpu.abi | cut -c-3`
-  ABI2=`grep_prop ro.product.cpu.abi2 | cut -c-3`
-  ABILONG=`grep_prop ro.product.cpu.abi`
+  API=$(grep_get_prop ro.build.version.sdk)
+  ABI=$(grep_get_prop ro.product.cpu.abi | cut -c-3)
+  ABI2=$(grep_get_prop ro.product.cpu.abi2 | cut -c-3)
+  ABILONG=$(grep_get_prop ro.product.cpu.abi)
 
   ARCH=arm
   ARCH32=arm
@@ -543,11 +553,13 @@ find_magisk_apk() {
   [ -z $APK ] && APK=/data/adb/magisk.apk
   [ -f $APK ] || APK=/data/magisk/magisk.apk
   [ -f $APK ] || APK=/data/app/com.topjohnwu.magisk*/*.apk
+  [ -f $APK ] || APK=/data/app/*/com.topjohnwu.magisk*/*.apk
   if [ ! -f $APK ]; then
     DBAPK=$(magisk --sqlite "SELECT value FROM strings WHERE key='requester'" 2>/dev/null | cut -d= -f2)
-    [ -z $DBAPK ] && DBAPK=$(strings /data/adb/magisk.db | grep -E '^.requester.' | cut -c11-)
+    [ -z $DBAPK ] && DBAPK=$(strings /data/adb/magisk.db | grep -oE 'requester..*' | cut -c10-)
     [ -z $DBAPK ] || APK=/data/user_de/*/$DBAPK/dyn/*.apk
     [ -f $APK ] || [ -z $DBAPK ] || APK=/data/app/$DBAPK*/*.apk
+    [ -f $APK ] || [ -z $DBAPK ] || APK=/data/app/*/$DBAPK*/*.apk
   fi
   [ -f $APK ] || ui_print "! Unable to detect Magisk app APK for BootSigner"
 }
