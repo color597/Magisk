@@ -3,24 +3,26 @@ package com.topjohnwu.magisk.core
 import android.os.Build
 import android.os.Process
 import com.topjohnwu.magisk.BuildConfig
-import java.io.File
 
 @Suppress("DEPRECATION")
 object Const {
 
-    val CPU_ABI: String = Build.SUPPORTED_ABIS[0]
-    val CPU_ABI_32: String = Build.SUPPORTED_32_BIT_ABIS.firstOrNull() ?: CPU_ABI
+    val CPU_ABI: String get() = Build.SUPPORTED_ABIS[0]
+
+    // Null if 32-bit only or 64-bit only
+    val CPU_ABI_32 =
+        if (Build.SUPPORTED_64_BIT_ABIS.isEmpty()) null
+        else Build.SUPPORTED_32_BIT_ABIS.firstOrNull()
 
     // Paths
     lateinit var MAGISKTMP: String
-    lateinit var NATIVE_LIB_DIR: File
     val MAGISK_PATH get() = "$MAGISKTMP/modules"
     const val TMPDIR = "/dev/tmp"
     const val MAGISK_LOG = "/cache/magisk.log"
 
     // Versions
     const val SNET_EXT_VER = 17
-    const val SNET_REVISION = "22.0"
+    const val SNET_REVISION = "23.0"
     const val BOOTCTL_REVISION = "22.0"
 
     // Misc
